@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "OCW Bookmarker",
+  "version": "0.1.0",
+  "description": "Remember where you stopped in online lectures.",
+  "permissions": ["storage"],
+  "host_permissions": [
+    "https://www.youtube.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.youtube.com/watch*",
+        "https://www.youtube.com/embed/*"
+      ],
+      "js": ["content.js"],
+      "run_at": "document_idle",
+      "all_frames": true
+    }
+  ]
+}

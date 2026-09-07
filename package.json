@@ -1,0 +1,19 @@
+{
+  "name": "ocw-bookmarker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "vite build",
+    "dev": "vite build --watch"
+  },
+  "keywords": [],
+  "type": "commonjs",
+  "devDependencies": {
+    "@types/chrome": "^0.2.9",
+    "@types/node": "^26.5.0",
+    "typescript": "^7.0.2",
+    "vite": "^8.2.2"
+  }
+}
