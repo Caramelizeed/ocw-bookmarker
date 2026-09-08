@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>OCW Bookmarker</title>
+
+    <link
+        rel="stylesheet"
+        href="popup.css"
+    >
+
+</head>
+
+
+<body>
+
+    <main class="popup">
+
+
+        <!-- HEADER -->
+
+        <header class="header">
+
+            <div>
+
+                <div class="brand">
+                    OCW BOOKMARKER
+                </div>
+
+                <div class="sync-status">
+
+                    <span class="status-dot"></span>
+
+                    <span>
+                        Active Sync
+                    </span>
+
+                    <span class="separator">
+                        /
+                    </span>
+
+                    <span id="course-code">
+                        OCW
+                    </span>
+
+                </div>
+
+            </div>
+
+            <span class="header-mark"></span>
+
+        </header>
+
+
+        <!-- CURRENT DETECTION -->
+
+        <section class="card detection-card">
+
+            <div class="card-header">
+
+                <div class="eyebrow">
+                    CURRENT DETECTION
+                </div>
+
+                <div
+                    class="term-badge"
+                    id="course-term"
+                >
+                    --
+                </div>
+
+            </div>
+
+
+            <div class="course-label">
+
+                Course //
+
+                <span id="course-code-large">
+                    --
+                </span>
+
+            </div>
+
+
+            <h1 id="course-title">
+                Loading course...
+            </h1>
+
+
+            <div
+                class="lecture-title"
+                id="lecture-title"
+            >
+                Loading lecture...
+            </div>
+
+
+            <div
+                class="course-label lecture-number"
+                id="lecture-number"
+            >
+                --
+            </div>
+
+
+            <!-- PROGRESS -->
+
+            <div class="progress-info">
+
+                <div class="time-info">
+
+                    <span class="live-dot"></span>
+
+                    <span id="current-time">
+                        00:00
+                    </span>
+
+                    <span class="time-divider">
+                        /
+                    </span>
+
+                    <span id="total-time">
+                        00:00
+                    </span>
+
+                </div>
+
+
+                <div
+                    class="percentage"
+                    id="percentage"
+                >
+                    0%
+                </div>
+
+            </div>
+
+
+            <div class="progress-track">
+
+                <div
+                    class="progress-fill"
+                    id="progress-fill"
+                ></div>
+
+                <div
+                    class="progress-marker"
+                    id="progress-marker"
+                ></div>
+
+            </div>
+
+
+            <!-- RESUME -->
+
+            <button
+                class="resume-button"
+                id="resume-button"
+                type="button"
+            >
+
+                <span class="play-icon">
+                    ▷
+                </span>
+
+                <span>
+                    Resume at
+                </span>
+
+                <strong id="resume-time">
+                    00:00
+                </strong>
+
+            </button>
+
+
+            <!-- NAVIGATION -->
+
+            <div class="lecture-navigation">
+
+                <button
+                    class="nav-button"
+                    id="previous-button"
+                    type="button"
+                >
+
+                    <span>
+                        ←
+                    </span>
+
+                    <span id="previous-label">
+                        Previous
+                    </span>
+
+                </button>
+
+
+                <button
+                    class="nav-button"
+                    id="next-button"
+                    type="button"
+                >
+
+                    <span id="next-label">
+                        Next
+                    </span>
+
+                    <span>
+                        →
+                    </span>
+
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- STUDY NEXT -->
+
+        <section class="card study-card">
+
+            <div class="card-header">
+
+                <div class="eyebrow">
+                    STUDY NEXT
+                </div>
+
+                <div class="week-badge">
+                    OCW
+                </div>
+
+            </div>
+
+
+            <!-- READING -->
+
+            <div class="reading-row">
+
+                <div class="resource-icon">
+                    R
+                </div>
+
+                <div class="resource-content">
+
+                    <div class="resource-kicker">
+                        RECOMMENDED READING
+                    </div>
+
+                    <div
+                        class="resource-title"
+                        id="reading-sections"
+                    >
+                        Loading reading...
+                    </div>
+
+                    <div class="resource-meta">
+                        Elementary Real Analysis
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- LECTURE NOTES -->
+
+            <div class="study-resource-row">
+
+                <div class="resource-icon">
+                    N
+                </div>
+
+                <div class="resource-content">
+
+                    <div
+                        class="resource-title"
+                        id="notes-title"
+                    >
+                        Lecture Notes
+                    </div>
+
+                    <div
+                        class="resource-meta"
+                        id="notes-meta"
+                    >
+                        --
+                    </div>
+
+                </div>
+
+                <button
+                    class="resource-action"
+                    id="notes-download"
+                    type="button"
+                >
+                    PDF ↓
+                </button>
+
+            </div>
+
+
+            <!-- PROBLEM SET -->
+
+            <div class="study-resource-row">
+
+                <div class="resource-icon">
+                    P
+                </div>
+
+                <div class="resource-content">
+
+                    <div
+                        class="resource-title"
+                        id="pset-title"
+                    >
+                        Upcoming PSet
+                    </div>
+
+                    <div
+                        class="resource-meta"
+                        id="pset-meta"
+                    >
+                        --
+                    </div>
+
+                </div>
+
+                <button
+                    class="resource-action"
+                    id="pset-download"
+                    type="button"
+                >
+                    PDF ↓
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- FOOTER -->
+
+        <footer class="footer">
+
+            <span class="footer-status">
+
+                <span class="status-dot"></span>
+
+                <span>
+                    chrome.storage.local
+                </span>
+
+                <span class="separator">
+                    •
+                </span>
+
+                <span>
+                    synced
+                </span>
+
+            </span>
+
+
+            <span class="version">
+                v0.3.0
+            </span>
+
+        </footer>
+
+    </main>
+
+
+    <script src="popup.js"></script>
+
+</body>
+
+</html>

@@ -6,13 +6,10 @@ export default defineConfig({
         emptyOutDir: true,
 
         rollupOptions: {
-            input: {
-                content: "src/content.ts",
-                background: "src/background.ts"
-            },
+            input: "src/content.ts",
 
             output: {
-                entryFileNames: "[name].js",
+                entryFileNames: "content.js",
                 format: "iife"
             }
         }

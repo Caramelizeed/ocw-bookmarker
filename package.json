@@ -1,18 +1,16 @@
 {
   "name": "ocw-bookmarker",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "MIT OCW lecture progress and bookmarking extension",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "vite build",
-    "dev": "vite build --watch"
+      "test": "echo \"Error: no test specified\" && exit 1",
+      "build": "vite build --config vite.content.config.mts && vite build --config vite.background.config.mts && vite build --config vite.popup.config.mts && vite build --config vite.ocw.config.mts",
+      "dev": "vite build --watch"
   },
-  "keywords": [],
-  "type": "commonjs",
   "devDependencies": {
     "@types/chrome": "^0.2.9",
-    "@types/node": "^26.5.0",
+    "@types/node": "^24.0.0",
     "typescript": "^7.0.2",
     "vite": "^8.2.2"
   }

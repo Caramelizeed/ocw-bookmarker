@@ -3,16 +3,13 @@ import { defineConfig } from "vite";
 export default defineConfig({
     build: {
         outDir: "dist",
-        emptyOutDir: true,
+        emptyOutDir: false,
 
         rollupOptions: {
-            input: {
-                content: "src/content.ts",
-                background: "src/background.ts"
-            },
+            input: "src/ocw.ts",
 
             output: {
-                entryFileNames: "[name].js",
+                entryFileNames: "ocw.js",
                 format: "iife"
             }
         }

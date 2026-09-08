@@ -1,50 +1,100 @@
-# OCW Bookmarker
+<div align="center">
 
-A tiny Chrome extension that remembers where you stopped in an MIT OpenCourseWare lecture, so you don't have to.
+# 🔖 OCW Bookmarker
 
-<p align="center">
-  <img src="assets/kaneki-ken.jpeg" alt="Kaneki Ken" width="220">
-</p>
+### *pick up exactly where the lecture left you hanging*
 
-## Why?
+<img src="assets/kaneki-ken.jpeg" alt="Kaneki Ken" width="200">
 
-I was working through an MIT OCW lecture on stochastic gradient descent — the kind that runs 45 minutes and doesn't pause for you to make coffee. I'd close the tab, come back later, and have no idea whether I'd stopped at the part about learning rates or the part about mini-batches. Scrubbing through the timeline to find out got old fast.
+A tiny Chrome extension that never forgets your place in an MIT OpenCourseWare lecture — and hands you the readings, notes, and problem sets that go with it.
 
-So I built something to remember for me.
+`TypeScript` · `Vite` · `Manifest V3` · `Chrome Storage API`
 
-## What it does
+---
 
-- Detects the YouTube video currently playing
-- Saves the playback position roughly every 5 seconds
-- Restores it automatically the next time you open the same lecture
-- Works whether YouTube is loaded directly or embedded (see below)
+</div>
 
-## The slightly annoying part
+## 😩 The Problem
 
-MIT OCW doesn't just show you a YouTube video — it hides one inside an iframe:
+MIT OCW lectures run long. You bail out at minute 38 to make dinner, come back three days later, and now you're on a scavenger hunt — scrubbing the timeline, guessing where you stopped, half-remembering whether you actually finished the bit on stochastic gradient descent or just dozed off during it.
+
+**OCW Bookmarker remembers so you don't have to.**
+
+---
+
+## ✨ What It Actually Does
+
+<table>
+<tr>
+<td width="33%" valign="top">
+
+### ⏱️ Lecture Progress
+- Tracks both `youtube.com/watch` and OCW's embedded `youtube.com/embed/VIDEO_ID`
+- Autosaves position every ~5s
+- Resumes right where you left off
+- Stored locally, per video ID
+
+</td>
+<td width="33%" valign="top">
+
+### 🎓 OCW Context
+- Course title, number & term
+- Current lecture + sequence
+- Linked readings & notes
+- Problem sets, correctly ordered
+
+</td>
+<td width="33%" valign="top">
+
+### 📚 Study Resources
+- Pulls readings & lecture notes into the popup
+- One-click PDF downloads
+- Jump between lectures without leaving the video
+
+</td>
+</tr>
+</table>
+
+---
+
+## 🧩 How OCW & YouTube Fit Together
+
+MIT OpenCourseWare doesn't host video itself — it wraps a YouTube player inside its course pages. That layering is exactly what makes "just remember my timestamp" harder than it sounds:
 
 ```
-OCW lecture
-    ↓
-YouTube iframe
-    ↓
-/embed/VIDEO_ID
-    ↓
-<video>
-    ↓
-OCW Bookmarker
+   MIT OpenCourseWare
+          │
+          ▼
+     YouTube iframe
+          │
+          ▼
+youtube.com/embed/VIDEO_ID
+          │
+          ▼
+        <video>
+          │
+          ▼
+    OCW Bookmarker  ← you are here
 ```
 
-A normal YouTube URL looks like `youtube.com/watch?v=ID`. OCW's embedded player uses `youtube.com/embed/ID` instead, buried a frame deep. The extension didn't know this existed until it very confidently failed to find any video at all. Fixed by injecting the content script directly into the iframe.
+The extension leans on the **YouTube video ID** for playback tracking, and on the **OCW page itself** for the academic context wrapped around it — two data sources, one seamless popup.
 
-## How it works
+---
 
-1. Grab the video ID from the page (watch or embed URL).
-2. Find the actual `<video>` element once it exists — the player doesn't always load immediately.
-3. Read `currentTime` every ~5 seconds and write it to `chrome.storage.local`, keyed by video ID.
-4. On load, check storage for that ID and seek to the saved time if found.
+## ⚙️ Under the Hood
 
-## Installation
+| Step | What Happens |
+|---|---|
+| **1. Spot the video** | Content script pulls the video ID from either `/watch?v=` or `/embed/` URLs |
+| **2. Wait it out** | YouTube doesn't render `<video>` instantly — the extension waits for the player before touching anything |
+| **3. Save, quietly** | Every ~5s: video ID, position, duration, timestamp → `chrome.storage.local` |
+| **4. Pick up where you left off** | Same video reopened → player seeks straight to your saved position |
+| **5. Read the room** | A separate script parses the OCW page for readings, notes, problem sets & nav |
+| **6. Grab the PDFs** | Background service worker fires off downloads via the Chrome Downloads API |
+
+---
+
+## 🚀 Getting It Running
 
 ```bash
 git clone https://github.com/Caramelizeed/ocw-bookmarker.git
@@ -53,46 +103,72 @@ npm install
 npm run build
 ```
 
-Then load it manually:
+Then:
 
-1. Go to `chrome://extensions`
-2. Enable **Developer mode**
-3. Click **Load unpacked**
-4. Select the `dist/` folder
+1. Open `chrome://extensions`
+2. Flip on **Developer mode**
+3. **Load unpacked** → select `dist/`
 
-## Current limitations
+Made a change? `npm run build`, then hit **Reload** on the extension card. That's the whole loop.
 
-- Saves periodically, not continuously — the last few seconds before closing a tab may be lost
-- Resumes automatically, with no confirmation prompt
-- No popup UI yet
-- No course-level dashboard — it only knows about individual videos
+---
 
-## Roadmap
+## 🛠️ Development
 
-- Popup showing saved lectures
-- Manual bookmarks
-- Timestamped notes
-- Course-level progress tracking
-- A dashboard, eventually
+```bash
+npx tsc --noEmit   # type-check without emitting
+npm run build      # ship it to dist/
+```
 
-## Tech stack
+<details>
+<summary><b>📁 Project structure</b> (click to expand)</summary>
 
-| | |
+```
+ocw-bookmarker/
+├── assets/
+│   └── kaneki-ken.jpeg
+├── public/
+│   ├── manifest.json
+│   ├── popup.css
+│   └── popup.html
+├── src/
+│   ├── background.ts   # privileged ops — PDF downloads
+│   ├── content.ts      # tracks & restores YouTube playback
+│   ├── ocw.ts           # extracts OCW course/resource data
+│   └── popup.ts        # powers the popup UI
+├── vite.background.config.mts
+├── vite.content.config.mts
+├── vite.ocw.config.mts
+├── vite.popup.config.mts
+└── package.json
+```
+
+| File | Purpose |
 |---|---|
-| Language | TypeScript |
-| Build | Vite |
-| Platform | Chrome Extension Manifest V3 |
-| Storage | Chrome Storage API |
-| Playback | HTML5 Video API |
+| `content.ts` | Tracks and restores YouTube playback |
+| `ocw.ts` | Extracts MIT OCW course and resource info |
+| `popup.ts` | Powers the extension popup |
+| `background.ts` | Handles privileged background ops (PDF downloads) |
 
-## Privacy
+</details>
 
-Progress is stored locally with `chrome.storage.local`. No backend, no accounts, no playback data leaves your browser.
+---
 
-## License
+## 🔐 Permissions & Privacy
 
-MIT License — see [LICENSE](LICENSE).
+**Requests:** `storage`, `downloads`
 
-## Artwork
+**Host access:** `youtube.com/*`, `ocw.mit.edu/*` — needed to read playback state and course structure.
 
-The Kaneki Ken image is decorative and not covered by the project's software license.
+> 🕶️ **No backend. No accounts. No tracking.**
+> Everything lives in `chrome.storage.local`, on your machine, full stop. The extension never phones home with your viewing history or study data.
+
+---
+
+<div align="center">
+
+**License:** MIT — see [`LICENSE`](LICENSE)
+
+*The Kaneki Ken artwork is decorative and not covered by the project's software license.*
+
+</div>
